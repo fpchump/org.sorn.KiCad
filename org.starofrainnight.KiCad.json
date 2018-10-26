@@ -17,6 +17,62 @@
   ],
   "modules": [
     "shared-modules/glu/glu-9.0.0.json",
-    "shared-modules/glew/glew.json"
+    "shared-modules/glew/glew.json",
+    {
+      "name": "tcl",
+      "buildsystem": "autotools",
+      "builddir": true,
+      "subdir": "unix",
+      "sources": [{
+        "type": "archive",
+        "url": "https://prdownloads.sourceforge.net/tcl/tcl8.6.8-src.tar.gz",
+        "sha256": "c43cb0c1518ce42b00e7c8f6eaddd5195c53a98f94adc717234a65cbcfd3f96a"
+      }],
+      "post-install": [
+        "chmod 755 /app/lib/libtcl*.so",
+        "chmod 755 /app/lib/itcl*/*.so",
+        "chmod 755 /app/lib/sqlite*/*.so",
+        "chmod 755 /app/lib/tdbc*/*.so"
+      ]
+    },
+    {
+      "name": "tk",
+      "buildsystem": "autotools",
+      "builddir": true,
+      "subdir": "unix",
+      "sources": [{
+        "type": "archive",
+        "url": "https://prdownloads.sourceforge.net/tcl/tk8.6.8-src.tar.gz",
+        "sha256": "49e7bca08dde95195a27f594f7c850b088be357a7c7096e44e1158c7a5fd7b33"
+      }],
+      "post-install": ["chmod 755 /app/lib/libtk*.so"]
+    },
+    "shared-modules/python2.7/python-2.7.15.json",
+    {
+      "name": "msgpack",
+      "buildsystem": "cmake",
+      "sources": [{
+        "type": "archive",
+        "url": "https://github.com/msgpack/msgpack-c/releases/download/cpp-3.1.1/msgpack-3.1.1.tar.gz",
+        "sha256": "8592d12e19ac3796889b8358bc8f78df9272e6aa7a9ea1834bafd68e4073549a"
+      }]
+    },
+    "shared-modules/SDL/SDL-1.2.15.json",
+    {
+      "name": "libjpeg",
+      "sources": [{
+        "type": "archive",
+        "url": "http://www.ijg.org/files/jpegsrc.v9c.tar.gz",
+        "sha256": "650250979303a649e21f87b5ccd02672af1ea6954b911342ea491f351ceb7122"
+      }]
+    },
+    {
+      "name": "libtiff",
+      "sources": [{
+        "type": "archive",
+        "url": "http://download.osgeo.org/libtiff/tiff-4.0.9.tar.gz",
+        "sha256": "6e7bdeec2c310734e734d19aae3a71ebe37a4d842e0e23dbb1b8921c0026cfcd"
+      }]
+    }
   ]
 }
