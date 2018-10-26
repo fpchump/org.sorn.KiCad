@@ -1,0 +1,19 @@
+{
+  "app-id": "org.starofrainnight.KiCad",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "3.28",
+  "sdk": "org.gnome.Sdk",
+  "command": "kicad",
+  "appdata-license": "GPL-3.0+ and BSD and MIT and wxWidgets",
+  "rename-desktop-file": "kicad.desktop",
+  "rename-icon": "kicad",
+  "rename-appdata-file": "kicad.appdata.xml",
+  "finish-args": [
+    "--share=network",
+    "--socket=x11",
+    "--device=dri",
+    "--share=ipc",
+    "--filesystem=home"
+  ],
+  "modules": []
+}
