@@ -8,6 +8,9 @@
   "rename-desktop-file": "kicad.desktop",
   "rename-icon": "kicad",
   "rename-appdata-file": "kicad.appdata.xml",
+  "build-options": {
+    "build-args": ["--share=network"]
+  },
   "finish-args": [
     "--share=network",
     "--socket=x11",
@@ -23,11 +26,13 @@
       "buildsystem": "autotools",
       "builddir": true,
       "subdir": "unix",
-      "sources": [{
-        "type": "archive",
-        "url": "https://prdownloads.sourceforge.net/tcl/tcl8.6.8-src.tar.gz",
-        "sha256": "c43cb0c1518ce42b00e7c8f6eaddd5195c53a98f94adc717234a65cbcfd3f96a"
-      }],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://prdownloads.sourceforge.net/tcl/tcl8.6.8-src.tar.gz",
+          "sha256": "c43cb0c1518ce42b00e7c8f6eaddd5195c53a98f94adc717234a65cbcfd3f96a"
+        }
+      ],
       "post-install": [
         "chmod 755 /app/lib/libtcl*.so",
         "chmod 755 /app/lib/itcl*/*.so",
@@ -40,39 +45,168 @@
       "buildsystem": "autotools",
       "builddir": true,
       "subdir": "unix",
-      "sources": [{
-        "type": "archive",
-        "url": "https://prdownloads.sourceforge.net/tcl/tk8.6.8-src.tar.gz",
-        "sha256": "49e7bca08dde95195a27f594f7c850b088be357a7c7096e44e1158c7a5fd7b33"
-      }],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://prdownloads.sourceforge.net/tcl/tk8.6.8-src.tar.gz",
+          "sha256": "49e7bca08dde95195a27f594f7c850b088be357a7c7096e44e1158c7a5fd7b33"
+        }
+      ],
       "post-install": ["chmod 755 /app/lib/libtk*.so"]
     },
     "shared-modules/python2.7/python-2.7.15.json",
     {
+      "name": "pip-update",
+      "buildsystem": "simple",
+      "build-commands": [
+        "pip install -U pip",
+        "pip install -U setuptools",
+        "pip install -U wheel"
+      ]
+    },
+    {
+      "name": "scons",
+      "buildsystem": "simple",
+      "build-commands": ["pip install scons"]
+    },
+    {
       "name": "msgpack",
       "buildsystem": "cmake",
-      "sources": [{
-        "type": "archive",
-        "url": "https://github.com/msgpack/msgpack-c/releases/download/cpp-3.1.1/msgpack-3.1.1.tar.gz",
-        "sha256": "8592d12e19ac3796889b8358bc8f78df9272e6aa7a9ea1834bafd68e4073549a"
-      }]
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/msgpack/msgpack-c/releases/download/cpp-3.1.1/msgpack-3.1.1.tar.gz",
+          "sha256": "8592d12e19ac3796889b8358bc8f78df9272e6aa7a9ea1834bafd68e4073549a"
+        }
+      ]
     },
     "shared-modules/SDL/SDL-1.2.15.json",
     {
       "name": "libjpeg",
-      "sources": [{
-        "type": "archive",
-        "url": "http://www.ijg.org/files/jpegsrc.v9c.tar.gz",
-        "sha256": "650250979303a649e21f87b5ccd02672af1ea6954b911342ea491f351ceb7122"
-      }]
+      "sources": [
+        {
+          "type": "archive",
+          "url": "http://www.ijg.org/files/jpegsrc.v9c.tar.gz",
+          "sha256": "650250979303a649e21f87b5ccd02672af1ea6954b911342ea491f351ceb7122"
+        }
+      ]
     },
     {
       "name": "libtiff",
-      "sources": [{
-        "type": "archive",
-        "url": "http://download.osgeo.org/libtiff/tiff-4.0.9.tar.gz",
-        "sha256": "6e7bdeec2c310734e734d19aae3a71ebe37a4d842e0e23dbb1b8921c0026cfcd"
-      }]
+      "sources": [
+        {
+          "type": "archive",
+          "url": "http://download.osgeo.org/libtiff/tiff-4.0.9.tar.gz",
+          "sha256": "6e7bdeec2c310734e734d19aae3a71ebe37a4d842e0e23dbb1b8921c0026cfcd"
+        }
+      ]
+    },
+    {
+      "name": "wxWidgets",
+      "rm-configure": true,
+      "config-opts": ["--disable-silent-rules", "--disable-mediactrl"],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.4/wxWidgets-3.0.4.tar.bz2",
+          "sha256": "96157f988d261b7368e5340afa1a0cad943768f35929c22841f62c25b17bf7f0"
+        },
+        {
+          "type": "script",
+          "commands": [
+            "cp -p /usr/share/automake-*/config.{sub,guess} .",
+            "autoconf -f -B build/autoconf_prepend-include"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "apr",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "http://apache.osuosl.org//apr/apr-1.6.5.tar.gz",
+          "sha256": "70dcf9102066a2ff2ffc47e93c289c8e54c95d8dda23b503f9e61bb0cbd2d105"
+        }
+      ]
+    },
+    {
+      "name": "apr-util",
+      "config-opts": ["--with-apr=/app"],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "http://apache.osuosl.org//apr/apr-util-1.6.1.tar.gz",
+          "sha256": "b65e40713da57d004123b6319828be7f1273fbc6490e145874ee1177e112c459"
+        }
+      ]
+    },
+    {
+      "name": "serf",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://www.apache.org/dist/serf/serf-1.3.9.tar.bz2",
+          "sha256": "549c2d21c577a8a9c0450facb5cca809f26591f048e466552240947bdf7a87cc"
+        }
+      ],
+      "build-commands": [
+        "scons APR=/app APU=/app PREFIX=/app LIBDIR=/app/lib",
+        "scons install"
+      ]
+    },
+    {
+      "name": "utf8proc",
+      "buildsystem": "cmake",
+      "builddir": true,
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/JuliaStrings/utf8proc/archive/v2.2.0.tar.gz",
+          "sha256": "3f8fd1dbdb057ee5ba584a539d5cd1b3952141c0338557cb0bdf8cb9cfed5dbf"
+        }
+      ]
+    },
+    {
+      "name": "subversion",
+      "config-opts": ["--with-lz4=internal"],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "http://apache.mirrors.hoobly.com/subversion/subversion-1.11.0.tar.bz2",
+          "sha256": "87c44344b074ac2e9ed7ca9675fb1e5b197051c3deecfe5934e5f6aefbf83e56"
+        }
+      ]
+    },
+    {
+      "name": "wxPython",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/wxWidgets/wxPython/archive/wxPy-3.0.2.0.tar.gz",
+          "sha256": "b068d76e9773c5b0cb0620a66827fca35b8ab9364a2fc8b865ef125720b26afc"
+        },
+        {
+          "type": "patch",
+          "path": "wxpython-update-wxwidget-to-3.0.4.patch"
+        },
+        {
+          "type": "patch",
+          "path": "wxpython-fix-gstreamer-missing.patch"
+        },
+        {
+          "type": "shell",
+          "commands": ["cd wxPython && ./bin/subrepos-make"]
+        }
+      ],
+      "buildsystem": "simple",
+      "subdir": "wxPython",
+      "build-commands": [
+        "python ./build-wxpython.py",
+        "python ./build-wxpython.py install",
+        "python setup.py install"
+      ]
     }
   ]
 }
