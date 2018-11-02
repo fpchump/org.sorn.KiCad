@@ -1,0 +1,224 @@
+app-id: org.sorn.KiCad
+runtime: org.gnome.Platform
+runtime-version: "3.26"
+sdk: org.gnome.Sdk
+command: kicad
+appdata-license: GPL-3.0+ and BSD and MIT and wxWidgets
+rename-desktop-file: kicad.desktop
+rename-icon: kicad
+rename-appdata-file: kicad.appdata.xml
+build-options:
+  build-args:
+    - --share=network
+finish-args:
+  - --share=network
+  - --socket=x11
+  - --device=dri
+  - --share=ipc
+  - --filesystem=home
+modules:
+  - shared-modules/glu/glu-9.0.0.json
+  - shared-modules/glew/glew.json
+  - name: tcl
+    buildsystem: autotools
+    builddir: true
+    subdir: unix
+    sources:
+      - type: archive
+        url: https://prdownloads.sourceforge.net/tcl/tcl8.6.8-src.tar.gz
+        sha256: c43cb0c1518ce42b00e7c8f6eaddd5195c53a98f94adc717234a65cbcfd3f96a
+    post-install:
+      - chmod 755 /app/lib/libtcl*.so
+      - chmod 755 /app/lib/itcl*/*.so
+      - chmod 755 /app/lib/sqlite*/*.so
+      - chmod 755 /app/lib/tdbc*/*.so
+  - name: tk
+    buildsystem: autotools
+    builddir: true
+    subdir: unix
+    sources:
+      - type: archive
+        url: https://prdownloads.sourceforge.net/tcl/tk8.6.8-src.tar.gz
+        sha256: 49e7bca08dde95195a27f594f7c850b088be357a7c7096e44e1158c7a5fd7b33
+    post-install:
+      - chmod 755 /app/lib/libtk*.so
+  - shared-modules/python2.7/python-2.7.15.json
+  - name: pip-update
+    buildsystem: simple
+    build-commands:
+      - pip install -U pip
+      - pip install -U setuptools
+      - pip install -U wheel
+  - name: scons
+    buildsystem: simple
+    build-commands:
+      - pip install scons
+  - name: msgpack
+    buildsystem: cmake
+    sources:
+      - type: archive
+        url: https://github.com/msgpack/msgpack-c/releases/download/cpp-3.1.1/msgpack-3.1.1.tar.gz
+        sha256: 8592d12e19ac3796889b8358bc8f78df9272e6aa7a9ea1834bafd68e4073549a
+  - shared-modules/SDL/SDL-1.2.15.json
+  - name: libjpeg
+    sources:
+      - type: archive
+        url: http://www.ijg.org/files/jpegsrc.v9c.tar.gz
+        sha256: 650250979303a649e21f87b5ccd02672af1ea6954b911342ea491f351ceb7122
+  - name: libtiff
+    sources:
+      - type: archive
+        url: http://download.osgeo.org/libtiff/tiff-4.0.9.tar.gz
+        sha256: 6e7bdeec2c310734e734d19aae3a71ebe37a4d842e0e23dbb1b8921c0026cfcd
+  - name: wxWidgets
+    rm-configure: true
+    config-opts:
+      - --disable-silent-rules
+      - --disable-mediactrl
+    sources:
+      - type: archive
+        url: https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.4/wxWidgets-3.0.4.tar.bz2
+        sha256: 96157f988d261b7368e5340afa1a0cad943768f35929c22841f62c25b17bf7f0
+      - type: script
+        commands:
+          - cp -p /usr/share/automake-*/config.{sub,guess} .
+          - autoconf -f -B build/autoconf_prepend-include
+  - name: apr
+    sources:
+      - type: archive
+        url: http://apache.osuosl.org//apr/apr-1.6.5.tar.gz
+        sha256: 70dcf9102066a2ff2ffc47e93c289c8e54c95d8dda23b503f9e61bb0cbd2d105
+  - name: apr-util
+    config-opts:
+      - --with-apr=/app
+    sources:
+      - type: archive
+        url: http://apache.osuosl.org//apr/apr-util-1.6.1.tar.gz
+        sha256: b65e40713da57d004123b6319828be7f1273fbc6490e145874ee1177e112c459
+  - name: serf
+    buildsystem: simple
+    sources:
+      - type: archive
+        url: https://www.apache.org/dist/serf/serf-1.3.9.tar.bz2
+        sha256: 549c2d21c577a8a9c0450facb5cca809f26591f048e466552240947bdf7a87cc
+    build-commands:
+      - scons APR=/app APU=/app PREFIX=/app LIBDIR=/app/lib
+      - scons install
+  - name: utf8proc
+    buildsystem: cmake
+    builddir: true
+    sources:
+      - type: archive
+        url: https://github.com/JuliaStrings/utf8proc/archive/v2.2.0.tar.gz
+        sha256: 3f8fd1dbdb057ee5ba584a539d5cd1b3952141c0338557cb0bdf8cb9cfed5dbf
+  - name: subversion
+    config-opts:
+      - --with-lz4=internal
+    sources:
+      - type: archive
+        url: http://apache.mirrors.hoobly.com/subversion/subversion-1.11.0.tar.bz2
+        sha256: 87c44344b074ac2e9ed7ca9675fb1e5b197051c3deecfe5934e5f6aefbf83e56
+  - name: wxPython
+    sources:
+      - type: archive
+        url: https://github.com/wxWidgets/wxPython/archive/wxPy-3.0.2.0.tar.gz
+        sha256: b068d76e9773c5b0cb0620a66827fca35b8ab9364a2fc8b865ef125720b26afc
+      - type: patch
+        path: patches/wxpython-update-wxwidget-to-3.0.4.patch
+      - type: patch
+        path: patches/wxpython-fix-gstreamer-missing.patch
+      - type: shell
+        commands:
+          - cd wxPython && ./bin/subrepos-make
+    buildsystem: simple
+    subdir: wxPython
+    build-commands:
+      - python ./build-wxpython.py
+      - python ./build-wxpython.py install
+      - python setup.py install
+  - name: OCE
+    sources:
+      - type: archive
+        url: https://github.com/tpaviot/oce/archive/OCE-0.18.3.tar.gz
+        sha256: c553d6a7bf52f790abc3b6bb7a1e91a65947e92a426bb1a88a11960c31f0966c
+    buildsystem: cmake
+    config-opts:
+      - -DOCE_INSTALL_PREFIX=/app
+  - name: glm
+    sources:
+      - type: archive
+        url: https://github.com/g-truc/glm/releases/download/0.9.9.0/glm-0.9.9.0.zip
+        sha256: e1c707407c43589e8eeb8b69b902f1a34aaaa59bda1ca144181c2d2d6e531246
+    buildsystem: cmake
+  - name: boost
+    sources:
+      - type: archive
+        url: http://sourceforge.net/projects/boost/files/boost/1.66.0/boost_1_66_0.tar.bz2
+        sha256: 5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9
+    buildsystem: simple
+    build-commands:
+      - ./bootstrap.sh --prefix=/app
+      - ./b2 install --with-context --with-date_time --with-filesystem --with-iostreams
+        --with-locale --with-program_options --with-regex --with-system --with-thread
+        --with-test --prefix=/app
+  - name: ngspice
+    rm-configure: true
+    config-opts:
+      - --disable-silent-rules
+      - --with-ngshared
+      - --enable-xspice
+      - --enable-cider
+      - --enable-openmp
+    sources:
+      - type: archive
+        url: https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/28/ngspice-28.tar.gz
+        sha256: 94804fa78c8db2f90f088902e8c27f7b732a66767a58c70f37612bff5a16df66
+      - type: script
+        commands:
+          - cp -p /usr/share/automake-*/config.{sub,guess} .
+          - autoconf -f -B build/autoconf_prepend-include
+  - name: kicad
+    sources:
+      - type: archive
+        url: https://launchpad.net/kicad/5.0/5.0.0/+download/kicad-5.0.0.tar.xz
+        sha256: 377582e4287146186593d42a5a7fe761590a79404982524ce445b4edbf96d89e
+    buildsystem: cmake
+    config-opts:
+      - -DBOOST_ROOT=/app
+      - -DGLEW_GLEW_LIBRARY=/app/lib/libGLEW.so
+      - -DGLEW_INCLUDE_DIR=/app/include/GL
+      - -DOPENGL_glu_LIBRARY=/app/lib/libGLU.so
+      - -DKICAD_SPICE=ON
+  - name: kicad-templates
+    sources:
+      - type: archive
+        url: https://github.com/KiCad/kicad-templates/archive/5.0.0.tar.gz#/kicad-templates-5.0.0.tar.gz
+        sha256: 5259eca6d7b4519258a6cfd7d9e90b5eeeaa6ab6975ad0b12734f7bca1210cb6
+    buildsystem: cmake
+  - name: kicad-symbols
+    sources:
+      - type: archive
+        url: https://github.com/KiCad/kicad-symbols/archive/5.0.0.tar.gz#/kicad-symbols-5.0.0.tar.gz
+        sha256: 0bf931ffa8da438cf44c2b0a69c3625296e5c9935c40cd6274182cad7fcda825
+    buildsystem: cmake
+  - name: kicad-footprints
+    sources:
+      - type: archive
+        url: https://github.com/KiCad/kicad-footprints/archive/5.0.0.tar.gz#/kicad-footprints-5.0.0.tar.gz
+        sha256: 26c0231043b66e75d02aa5e5c9b51a07966e3aed8c17df22c255aa379104e2a6
+    buildsystem: cmake
+  - name: kicad-packages3D
+    sources:
+      - type: archive
+        url: https://github.com/KiCad/kicad-packages3D/archive/5.0.0.tar.gz#/kicad-packages3D-5.0.0.tar.gz
+        sha256: 8e9b0dfb886e1ec699474b2438c0e92b2a2148950d015c6af4f85c38ca20d659
+    buildsystem: cmake
+  - name: kicad-i18n
+    sources:
+      - type: archive
+        url: https://github.com/KiCad/kicad-i18n/archive/5.0.0.tar.gz#/kicad-i18n-5.0.0.tar.gz
+        sha256: ed029a7a2fabbb388828a72eed509fed948895e2d8f848ebf91e5251de60ce4a
+    buildsystem: cmake
+    builddir: true
+    config-opts:
+      - -DKICAD_I18N_UNIX_STRICT_PATH=ON
