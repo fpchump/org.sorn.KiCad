@@ -1,0 +1,15 @@
+diff -Naur wxPython-wxPy-3.0.2.0-patched/build/tools/build-wxwidgets.py wxPython-wxPy-3.0.2.0-patched2/build/tools/build-wxwidgets.py
+--- wxPython-wxPy-3.0.2.0-patched/build/tools/build-wxwidgets.py	2018-10-31 15:26:48.065317409 +0800
++++ wxPython-wxPy-3.0.2.0-patched2/build/tools/build-wxwidgets.py	2018-10-31 15:32:48.956402118 +0800
+@@ -271,9 +271,10 @@
+ 
+         wxpy_configure_opts = [
+                             "--with-opengl",
++                            "--disable-silent-rules",
+                             "--enable-sound",
+                             "--enable-graphics_ctx",
+-                            "--enable-mediactrl",
++                            "--disable-mediactrl",
+                             "--enable-display",
+                             "--enable-geometry",
+                             "--enable-debug_flag",

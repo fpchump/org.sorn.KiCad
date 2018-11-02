@@ -167,11 +167,11 @@
         },
         {
           "type": "patch",
-          "path": "wxpython-update-wxwidget-to-3.0.4.patch"
+          "path": "patches/wxpython-update-wxwidget-to-3.0.4.patch"
         },
         {
           "type": "patch",
-          "path": "wxpython-fix-gstreamer-missing.patch"
+          "path": "patches/wxpython-fix-gstreamer-missing.patch"
         },
         {
           "type": "shell",
