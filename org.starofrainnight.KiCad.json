@@ -1,7 +1,7 @@
 {
   "app-id": "org.starofrainnight.KiCad",
   "runtime": "org.gnome.Platform",
-  "runtime-version": "3.28",
+  "runtime-version": "3.26",
   "sdk": "org.gnome.Sdk",
   "command": "kicad",
   "appdata-license": "GPL-3.0+ and BSD and MIT and wxWidgets",
@@ -207,6 +207,150 @@
         "python ./build-wxpython.py install",
         "python setup.py install"
       ]
+    },
+    {
+      "name": "OCE",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/tpaviot/oce/archive/OCE-0.18.3.tar.gz",
+          "sha256": "c553d6a7bf52f790abc3b6bb7a1e91a65947e92a426bb1a88a11960c31f0966c"
+        }
+      ],
+      "buildsystem": "cmake",
+      "config-opts": ["-DOCE_INSTALL_PREFIX=/app"]
+    },
+    {
+      "name": "glm",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/g-truc/glm/releases/download/0.9.9.0/glm-0.9.9.0.zip",
+          "sha256": "e1c707407c43589e8eeb8b69b902f1a34aaaa59bda1ca144181c2d2d6e531246"
+        }
+      ],
+      "buildsystem": "cmake"
+    },
+    {
+      "name": "boost",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "http://sourceforge.net/projects/boost/files/boost/1.66.0/boost_1_66_0.tar.bz2",
+          "sha256": "5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9"
+        }
+      ],
+      "buildsystem": "simple",
+      "build-commands": [
+        "./bootstrap.sh --prefix=/app",
+        "./b2 install --with-context --with-date_time --with-filesystem --with-iostreams --with-locale --with-program_options --with-regex --with-system --with-thread --with-test --prefix=/app"
+      ]
+    },
+    {
+      "name": "ngspice",
+      "rm-configure": true,
+      "config-opts": [
+        "--disable-silent-rules",
+        "--with-ngshared",
+        "--enable-xspice",
+        "--enable-cider",
+        "--enable-openmp"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/28/ngspice-28.tar.gz",
+          "sha256": "94804fa78c8db2f90f088902e8c27f7b732a66767a58c70f37612bff5a16df66"
+        },
+        {
+          "type": "script",
+          "commands": [
+            "cp -p /usr/share/automake-*/config.{sub,guess} .",
+            "autoconf -f -B build/autoconf_prepend-include"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kicad",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://launchpad.net/kicad/5.0/5.0.0/+download/kicad-5.0.0.tar.xz",
+          "sha256": "377582e4287146186593d42a5a7fe761590a79404982524ce445b4edbf96d89e"
+        }
+      ],
+      "buildsystem": "cmake",
+      "config-opts": [
+        "-DBOOST_ROOT=/app",
+        "-DGLEW_GLEW_LIBRARY=/app/lib/libGLEW.so",
+        "-DGLEW_INCLUDE_DIR=/app/include/GL",
+        /* "-DKICAD_SKIP_BOOST=ON", */
+        "-DOPENGL_glu_LIBRARY=/app/lib/libGLU.so",
+        /*
+        "-DKICAD_SCRIPTING=OFF",
+        "-DKICAD_SCRIPTING_MODULES=OFF",
+        "-DKICAD_SCRIPTING_WXPYTHON=OFF",
+        */
+        "-DKICAD_SPICE=ON"
+      ]
+    },
+    {
+      "name": "kicad-templates",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/KiCad/kicad-templates/archive/5.0.0.tar.gz#/kicad-templates-5.0.0.tar.gz",
+          "sha256": "5259eca6d7b4519258a6cfd7d9e90b5eeeaa6ab6975ad0b12734f7bca1210cb6"
+        }
+      ],
+      "buildsystem": "cmake"
+    },
+    {
+      "name": "kicad-symbols",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/KiCad/kicad-symbols/archive/5.0.0.tar.gz#/kicad-symbols-5.0.0.tar.gz",
+          "sha256": "0bf931ffa8da438cf44c2b0a69c3625296e5c9935c40cd6274182cad7fcda825"
+        }
+      ],
+      "buildsystem": "cmake"
+    },
+    {
+      "name": "kicad-footprints",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/KiCad/kicad-footprints/archive/5.0.0.tar.gz#/kicad-footprints-5.0.0.tar.gz",
+          "sha256": "26c0231043b66e75d02aa5e5c9b51a07966e3aed8c17df22c255aa379104e2a6"
+        }
+      ],
+      "buildsystem": "cmake"
+    },
+    {
+      "name": "kicad-packages3D",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/KiCad/kicad-packages3D/archive/5.0.0.tar.gz#/kicad-packages3D-5.0.0.tar.gz",
+          "sha256": "8e9b0dfb886e1ec699474b2438c0e92b2a2148950d015c6af4f85c38ca20d659"
+        }
+      ],
+      "buildsystem": "cmake"
+    },
+    {
+      "name": "kicad-i18n",
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://github.com/KiCad/kicad-i18n/archive/5.0.0.tar.gz#/kicad-i18n-5.0.0.tar.gz",
+          "sha256": "ed029a7a2fabbb388828a72eed509fed948895e2d8f848ebf91e5251de60ce4a"
+        }
+      ],
+      "buildsystem": "cmake",
+      "builddir": true,
+      "config-opts": ["-DKICAD_I18N_UNIX_STRICT_PATH=ON"]
     }
   ]
 }
