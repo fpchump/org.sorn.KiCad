@@ -1,4 +1,4 @@
-# org.starofrainnight.KiCad
+# org.sorn.KiCad
 
 This is a flatpak app build for KiCad.
 
