@@ -177,6 +177,21 @@ modules:
         commands:
           - cp -p /usr/share/automake-*/config.{sub,guess} .
           - autoconf -f -B build/autoconf_prepend-include
+  - name: pcre
+    # PCRE library required by SWIG
+    sources:
+      - type: archive
+        url: https://ftp.pcre.org/pub/pcre/pcre-8.42.tar.gz
+        sha256: 69acbc2fbdefb955d42a4c606dfde800c2885711d2979e356c0636efde9ec3b5
+  - name: swig
+    # SWIG package required by kicad
+    sources:
+      - type: archive
+        url: https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz/download
+        dest-filename: swig-3.0.12.tar.gz
+        sha256: 7cf9f447ae7ed1c51722efc45e7f14418d15d7a1e143ac9f09a668999f4fc94d
+    config-opts:
+      - --disable-ccache
   - name: kicad
     sources:
       - type: archive
