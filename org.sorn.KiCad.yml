@@ -183,6 +183,10 @@ modules:
       - type: archive
         url: https://ftp.pcre.org/pub/pcre/pcre-8.42.tar.gz
         sha256: 69acbc2fbdefb955d42a4c606dfde800c2885711d2979e356c0636efde9ec3b5
+    config-opts:
+      - --enable-utf
+      - --enable-unicode-properties
+      - --enable-jit
   - name: swig
     # SWIG package required by kicad
     sources:
