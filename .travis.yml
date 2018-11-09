@@ -4,19 +4,12 @@ matrix:
     - os: linux
       dist: xenial
       sudo: required
+      services:
+        - docker
       script:
-        - sudo add-apt-repository -y ppa:alexlarsson/flatpak
-        - sudo apt update
-        - sudo apt install -y flatpak flatpak-builder
-        - sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-        - sudo flatpak install -y flathub org.gnome.Platform/x86_64/3.26
-        - sudo flatpak install -y flathub org.gnome.Platform.Locale/x86_64/3.26
-        - sudo flatpak install -y flathub org.gnome.Sdk/x86_64/3.26
-        - sudo flatpak install -y flathub org.gnome.Sdk.Locale/x86_64/3.26
         - mkdir -p .cache
         - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
-        - flatpak-builder --repo=repo ./build org.sorn.KiCad.yml
-        - flatpak build-bundle repo kicad.flatpak org.sorn.KiCad
+        - docker run --privileged -v$PWD:/w -it ubuntu:18.04 /bin/bash -c "cd /w/ci && ./flatpak.sh"
       before_cache:
         - tar --xattrs --xattrs-include=* -cpf .cache/cache.tar install/linux/.flatpak-builder/
       cache:
