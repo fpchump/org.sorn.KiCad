@@ -3,14 +3,14 @@ matrix:
   include:
     - os: linux
       script:
-        - add-apt-repository ppa:alexlarsson/flatpak
-        - apt update
-        - atp install flatpak flatpak-builder
-        - flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-        - flatpak install -y flathub org.gnome.Platform/x86_64/3.26
-        - flatpak install -y flathub org.gnome.Platform.Locale/x86_64/3.26
-        - flatpak install -y flathub org.gnome.Sdk/x86_64/3.26
-        - flatpak install -y flathub org.gnome.Sdk.Locale/x86_64/3.26
+        - sudo add-apt-repository ppa:alexlarsson/flatpak
+        - sudo apt update
+        - sudo apt install flatpak flatpak-builder
+        - sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        - sudo flatpak install -y flathub org.gnome.Platform/x86_64/3.26
+        - sudo flatpak install -y flathub org.gnome.Platform.Locale/x86_64/3.26
+        - sudo flatpak install -y flathub org.gnome.Sdk/x86_64/3.26
+        - sudo flatpak install -y flathub org.gnome.Sdk.Locale/x86_64/3.26
         - mkdir -p .cache
         - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
         - flatpak-builder --repo=repo ./build org.sorn.KiCad.yml
