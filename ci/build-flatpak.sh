@@ -1,7 +1,8 @@
 #!/bin/bash
 
 apt update
-apt install software-properties-common python3-software-properties
+# Install add-apt-repository
+apt install -y software-properties-common python3-software-properties
 add-apt-repository -y ppa:alexlarsson/flatpak
 apt update
 apt install -y flatpak flatpak-builder
