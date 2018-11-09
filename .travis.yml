@@ -9,8 +9,20 @@ matrix:
       script:
         - mkdir -p .cache
         - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
-        - chmod +x ./ci/build-flatpak.sh
-        - docker run --privileged -v$PWD:/w -it ubuntu:18.04 /bin/bash -c "cd /w && ./ci/build-flatpak.sh"
+        - chmod +x ./ci/*.sh
+        - docker run --privileged -v$PWD:/w --name "build-env" -itd ubuntu:18.04 /bin/bash
+        - ./ci/run-docker-cmd.sh apt update
+        - ./ci/run-docker-cmd.sh apt install -y software-properties-common python3-software-properties
+        - ./ci/run-docker-cmd.sh apt update
+        - ./ci/run-docker-cmd.sh apt install -y flatpak flatpak-builder
+        - ./ci/run-docker-cmd.sh flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Platform/x86_64/3.26
+        - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Platform.Locale/x86_64/3.26
+        - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Sdk/x86_64/3.26
+        - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Sdk.Locale/x86_64/3.26
+        - ./ci/run-docker-cmd.sh flatpak-builder --repo=repo ./build org.sorn.KiCad.yml
+        - ./ci/run-docker-cmd.sh flatpak build-bundle repo kicad.flatpak org.sorn.KiCad
+        - docker stop build-env
       before_cache:
         - tar --xattrs --xattrs-include=* -cpf .cache/cache.tar .flatpak-builder/
       cache:
