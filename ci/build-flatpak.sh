@@ -11,5 +11,5 @@ flatpak install -y flathub org.gnome.Platform/x86_64/3.26
 flatpak install -y flathub org.gnome.Platform.Locale/x86_64/3.26
 flatpak install -y flathub org.gnome.Sdk/x86_64/3.26
 flatpak install -y flathub org.gnome.Sdk.Locale/x86_64/3.26
-flatpak-builder --repo=repo ./build org.sorn.KiCad.yml
-flatpak build-bundle repo kicad.flatpak org.sorn.KiCad
+flatpak-builder ./build org.sorn.KiCad.yml
+flatpak build-bundle /var/lib/flatpak/repo kicad.flatpak org.sorn.KiCad
