@@ -1,0 +1,23 @@
+language: cpp
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      script:
+        - add-apt-repository ppa:alexlarsson/flatpak
+        - apt update
+        - atp install flatpak flatpak-builder
+        - flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        - flatpak install -y flathub org.gnome.Platform/x86_64/3.26
+        - flatpak install -y flathub org.gnome.Platform.Locale/x86_64/3.26
+        - flatpak install -y flathub org.gnome.Sdk/x86_64/3.26
+        - flatpak install -y flathub org.gnome.Sdk.Locale/x86_64/3.26
+        - mkdir -p .cache
+        - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
+        - flatpak-builder --repo=repo ./build org.sorn.KiCad.yml
+        - flatpak build-bundle repo kicad.flatpak org.sorn.KiCad
+      before_cache:
+        - tar --xattrs --xattrs-include=* -cpf .cache/cache.tar install/linux/.flatpak-builder/
+      cache:
+        directories:
+          - .cache
