@@ -2,7 +2,6 @@ language: cpp
 matrix:
   include:
     - os: linux
-      sudo: required
       script:
         - add-apt-repository ppa:alexlarsson/flatpak
         - apt update
