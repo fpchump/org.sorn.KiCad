@@ -9,6 +9,7 @@ matrix:
       script:
         - mkdir -p .cache
         - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
+        - chmod +x ./ci/build-flatpak.sh
         - docker run --privileged -v$PWD:/w -it ubuntu:18.04 /bin/bash -c "cd /w && ./ci/build-flatpak.sh"
       before_cache:
         - tar --xattrs --xattrs-include=* -cpf .cache/cache.tar .flatpak-builder/
