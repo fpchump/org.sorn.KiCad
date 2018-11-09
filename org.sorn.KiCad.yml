@@ -1,7 +1,11 @@
 app-id: org.sorn.KiCad
 runtime: org.gnome.Platform
 runtime-version: "3.26"
+platform-extensions:
+  - org.gnome.Platform.Locale
 sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.gnome.Sdk.Locale
 command: kicad
 appdata-license: GPL-3.0+ and BSD and MIT and wxWidgets
 rename-desktop-file: kicad.desktop
