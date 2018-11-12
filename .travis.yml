@@ -13,6 +13,7 @@ matrix:
         - docker run --privileged -v$PWD:/w --name "build-env" -itd ubuntu:18.04 /bin/bash
         - ./ci/run-docker-cmd.sh apt update
         - ./ci/run-docker-cmd.sh apt install -y software-properties-common python3-software-properties
+        - ./ci/run-docker-cmd.sh add-apt-repository -y ppa:alexlarsson/flatpak
         - ./ci/run-docker-cmd.sh apt update
         - ./ci/run-docker-cmd.sh apt install -y flatpak flatpak-builder
         - ./ci/run-docker-cmd.sh flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
