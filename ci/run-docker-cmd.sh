@@ -1,4 +1,4 @@
 #!/bin/sh
 
 
-docker exec -it -v$PWD:/w build-env "cd /w; $*"
+docker exec -it build-env bash -c "cd /w; $*"
