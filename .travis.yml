@@ -21,7 +21,8 @@ matrix:
         - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Platform.Locale/x86_64/3.26
         - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Sdk/x86_64/3.26
         - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Sdk.Locale/x86_64/3.26
-        - ./ci/run-docker-cmd.sh flatpak-builder --repo=repo ./build org.sorn.KiCad.yml
+        - travis_wait 60 ./ci/run-docker-cmd-without-tty.sh flatpak-builder --repo=repo ./build org.sorn.KiCad.yml
+        - tail build-log.txt
         - ./ci/run-docker-cmd.sh flatpak build-bundle repo kicad.flatpak org.sorn.KiCad
         - docker stop build-env
       before_cache:
