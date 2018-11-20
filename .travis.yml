@@ -9,6 +9,10 @@ matrix:
       script:
         - mkdir -p .cache
         - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
+        - easy_install -U pip
+        - pip -U setuptools
+        - pip install -U wheel
+        - pip install click
         - chmod +x ./ci/*.sh
         - docker run --privileged -v$PWD:/w --name "build-env" -itd ubuntu:18.04 /bin/bash
         - ./ci/run-docker-cmd.sh apt update
@@ -21,8 +25,21 @@ matrix:
         - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Platform.Locale/x86_64/3.26
         - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Sdk/x86_64/3.26
         - ./ci/run-docker-cmd.sh flatpak install -y flathub org.gnome.Sdk.Locale/x86_64/3.26
-        - travis_wait 60 ./ci/run-docker-cmd-without-tty.sh flatpak-builder --repo=repo ./build org.sorn.KiCad.yml
-        - tail build-log.txt
+        - ./ci/run-docker-cmd-without-tty.sh flatpak-builder --repo=repo ./build org.sorn.KiCad.yml
+        - travis_wait 35 python3 ./ci/travis-watch-run-cmd.py
+        - tail cmd-run.log
+        - travis_wait 35 python3 ./ci/travis-watch-run-cmd.py
+        - tail cmd-run.log
+        - travis_wait 35 python3 ./ci/travis-watch-run-cmd.py
+        - tail cmd-run.log
+        - travis_wait 35 python3 ./ci/travis-watch-run-cmd.py
+        - tail cmd-run.log
+        - travis_wait 35 python3 ./ci/travis-watch-run-cmd.py
+        - tail cmd-run.log
+        - travis_wait 35 python3 ./ci/travis-watch-run-cmd.py
+        - tail cmd-run.log
+        - travis_wait 35 python3 ./ci/travis-watch-run-cmd.py
+        - tail cmd-run.log
         - ./ci/run-docker-cmd.sh flatpak build-bundle repo kicad.flatpak org.sorn.KiCad
         - docker stop build-env
       before_cache:
