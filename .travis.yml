@@ -9,10 +9,14 @@ matrix:
       script:
         - mkdir -p .cache
         - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
-        - easy_install -U pip
-        - pip -U setuptools
-        - pip install -U wheel
-        - pip install click
+        - sudo apt-get install python3
+        - sudo python3 -m easy_install -U pip
+        - sudo python2 -m easy_install -U pip
+        - sudo python3 -m pip install -U setuptools
+        - sudo python2 -m pip install -U setuptools
+        - sudo python3 -m pip install -U wheel
+        - sudo python2 -m pip install -U wheel
+        - sudo python3 -m pip install click
         - chmod +x ./ci/*.sh
         - docker run --privileged -v$PWD:/w --name "build-env" -itd ubuntu:18.04 /bin/bash
         - ./ci/run-docker-cmd.sh apt update
