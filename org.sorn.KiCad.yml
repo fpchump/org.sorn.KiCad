@@ -217,6 +217,7 @@ modules:
       - -DGLEW_GLEW_LIBRARY=/app/lib/libGLEW.so
       - -DGLEW_INCLUDE_DIR=/app/include/GL
       - -DOPENGL_glu_LIBRARY=/app/lib/libGLU.so
+      - -DKICAD_SCRIPTING_ACTION_MENU=ON
       - -DKICAD_SPICE=ON
   - name: kicad-templates
     sources:
