@@ -20,6 +20,8 @@ finish-args:
   - --device=dri
   - --share=ipc
   - --filesystem=home
+  # Support to access files that not only exists in home directory
+  - --filesystem=host
 modules:
   - shared-modules/glu/glu-9.0.0.json
   - shared-modules/glew/glew.json
