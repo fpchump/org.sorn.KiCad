@@ -210,9 +210,9 @@ modules:
         url: https://gitlab.gnome.org/GNOME/libxslt.git
   - name: kicad
     sources:
-      - type: archive
-        url: https://launchpad.net/kicad/5.0/5.0.2/+download/kicad-5.0.2.tar.xz
-        sha256: 2f3406e72eb6757789c18bd9204d0c6ddae64b025f4c6fec28037410722ec080
+      - type: git
+        tag: 5.1.0
+        url: https://github.com/KiCad/kicad-source-mirror.git
     buildsystem: cmake
     config-opts:
       - -DBOOST_ROOT=/app
@@ -223,9 +223,9 @@ modules:
       - -DKICAD_SPICE=ON
   - name: kicad-i18n
     sources:
-      - type: archive
-        url: https://github.com/KiCad/kicad-i18n/archive/5.0.2.tar.gz#/kicad-i18n-5.0.2.tar.gz
-        sha256: cde8939ad031519847f90daa1ad6d87516ab224949e028a5f89a895c7595870a
+      - type: git
+        tag: 5.1.0
+        url: https://github.com/KiCad/kicad-i18n.git
     buildsystem: cmake
     builddir: true
     config-opts:
