@@ -1,5 +1,7 @@
 app-id: org.sorn.KiCad
 runtime: org.gnome.Platform
+# FIXME: wxPython 3 can't compile in 3.30 with error 'gtk/gtk.h' is missing.
+# runtime-version: "3.30"
 runtime-version: "3.26"
 platform-extensions:
   - org.gnome.Platform.Locale
@@ -76,19 +78,6 @@ modules:
       - type: archive
         url: http://download.osgeo.org/libtiff/tiff-4.0.9.tar.gz
         sha256: 6e7bdeec2c310734e734d19aae3a71ebe37a4d842e0e23dbb1b8921c0026cfcd
-  - name: wxWidgets
-    rm-configure: true
-    config-opts:
-      - --disable-silent-rules
-      - --disable-mediactrl
-    sources:
-      - type: archive
-        url: https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.4/wxWidgets-3.0.4.tar.bz2
-        sha256: 96157f988d261b7368e5340afa1a0cad943768f35929c22841f62c25b17bf7f0
-      - type: script
-        commands:
-          - cp -p /usr/share/automake-*/config.{sub,guess} .
-          - autoconf -f -B build/autoconf_prepend-include
   - name: apr
     sources:
       - type: archive
@@ -124,6 +113,8 @@ modules:
       - type: archive
         url: http://apache.mirrors.hoobly.com/subversion/subversion-1.11.0.tar.bz2
         sha256: 87c44344b074ac2e9ed7ca9675fb1e5b197051c3deecfe5934e5f6aefbf83e56
+  # wxPython already included wxWidget, so we don't have to build wxWidget
+  # separately.
   - name: wxPython
     sources:
       - type: archive
@@ -139,9 +130,22 @@ modules:
     buildsystem: simple
     subdir: wxPython
     build-commands:
-      - python ./build-wxpython.py
-      - python ./build-wxpython.py install
+      - python ./build-wxpython.py --prefix=/app --install
       - python setup.py install
+  # FIXME: wxPython 4.x still not working with KiCad yet
+  # - name: wxPython
+  #   sources:
+  #     - type: git
+  #       tag: wxPython-4.0.4
+  #       url: https://github.com/wxWidgets/Phoenix.git
+  #     - type: shell
+  #       commands:
+  #         - git submodule update --init --recursive
+  #   buildsystem: simple
+  #   build-commands:
+  #     - pip install -U requests
+  #     - python build.py dox etg --nodoc sip build
+  #     - python build.py install --prefix=/app
   - name: OCE
     sources:
       - type: archive
