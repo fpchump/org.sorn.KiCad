@@ -1,8 +1,6 @@
 app-id: org.sorn.KiCad
 runtime: org.gnome.Platform
-# FIXME: wxPython 3 can't compile in 3.30 with error 'gtk/gtk.h' is missing.
-# runtime-version: "3.30"
-runtime-version: "3.26"
+runtime-version: "3.30"
 platform-extensions:
   - org.gnome.Platform.Locale
 sdk: org.gnome.Sdk
