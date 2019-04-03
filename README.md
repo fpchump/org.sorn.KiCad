@@ -1,8 +1,8 @@
 # org.sorn.KiCad
 
-This is a flatpak app build for KiCad.
+This is an unofficial flatpak app wrapper for KiCad.
 
-There already have a standard flatpak version for KiCad [This](https://github.com/flathub/org.kicad_pcb.KiCad), but seems it have features missing and buggy:
+There already have a official flatpak version for KiCad [This](https://github.com/flathub/org.kicad_pcb.KiCad), but seems it have features missing and buggy:
 
 1. No python support
 1. BOM generation not working
@@ -17,6 +17,6 @@ So I create this project for satisfy my needs until the standard project go furt
 ### Input Method
 
 Flatpak only support iBus, so if you want to input foreign language text to
-KiCad, you must switch to iBus. Other input method framework just like
+KiCad, you must switch to iBus. Other input method just like
 xim/fcitx/scim/iiim are unsupported and you may meet crash or freeze problems
 with them.
