@@ -1,4 +1,4 @@
-# org.sorn.KiCad
+# org.fpchump.KiCad
 
 This is an unofficial flatpak app wrapper for KiCad.
 
