@@ -115,37 +115,22 @@ modules:
         sha256: 87c44344b074ac2e9ed7ca9675fb1e5b197051c3deecfe5934e5f6aefbf83e56
   # wxPython already included wxWidget, so we don't have to build wxWidget
   # separately.
-  - name: wxPython
+  - name: wxPythonPhoenix
     sources:
-      - type: archive
-        url: https://github.com/wxWidgets/wxPython/archive/wxPy-3.0.2.0.tar.gz
-        sha256: b068d76e9773c5b0cb0620a66827fca35b8ab9364a2fc8b865ef125720b26afc
-      - type: patch
-        path: patches/wxpython-update-wxwidget-to-3.0.4.patch
-      - type: patch
-        path: patches/wxpython-fix-gstreamer-missing.patch
+      - type: git
+        tag: wxPython-4.0.4
+        url: https://github.com/wxWidgets/Phoenix.git
       - type: shell
         commands:
-          - cd wxPython && ./bin/subrepos-make
+          - git submodule update --init --recursive
     buildsystem: simple
-    subdir: wxPython
     build-commands:
-      - python ./build-wxpython.py --prefix=/app --install
-      - python setup.py install
-  # FIXME: wxPython 4.x still not working with KiCad yet
-  # - name: wxPython
-  #   sources:
-  #     - type: git
-  #       tag: wxPython-4.0.4
-  #       url: https://github.com/wxWidgets/Phoenix.git
-  #     - type: shell
-  #       commands:
-  #         - git submodule update --init --recursive
-  #   buildsystem: simple
-  #   build-commands:
-  #     - pip install -U requests
-  #     - python build.py dox etg --nodoc sip build
-  #     - python build.py install --prefix=/app
+      - pip install -U requests
+      - python build.py dox etg --nodoc sip
+      # Build wxWidget either (with no_magic and reconfigure for install with
+      # prefix)
+      - python build.py build --no_magic --prefix=/app --force_config
+      - python build.py install --no_magic --prefix=/app
   - name: OCE
     sources:
       - type: archive
@@ -224,6 +209,7 @@ modules:
       - -DGLEW_INCLUDE_DIR=/app/include/GL
       - -DOPENGL_glu_LIBRARY=/app/lib/libGLU.so
       - -DKICAD_SCRIPTING_ACTION_MENU=ON
+      - -DKICAD_SCRIPTING_WXPYTHON_PHOENIX=ON
       - -DKICAD_SPICE=ON
   - name: kicad-i18n
     sources:
