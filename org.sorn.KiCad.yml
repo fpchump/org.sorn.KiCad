@@ -1,4 +1,4 @@
-app-id: org.fpchump.KiCad
+app-id: org.sorn.KiCad
 runtime: org.gnome.Platform
 runtime-version: "3.30"
 platform-extensions:
