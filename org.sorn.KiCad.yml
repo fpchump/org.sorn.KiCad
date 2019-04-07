@@ -218,3 +218,10 @@ modules:
     builddir: true
     config-opts:
       - -DKICAD_I18N_UNIX_STRICT_PATH=ON
+  - name: export-all
+    sources:
+      - type: file
+        path: export-all.py
+    buildsystem: simple
+    build-commands:
+      - "python export-all.py"
