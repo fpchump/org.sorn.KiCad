@@ -15,6 +15,7 @@ So I create this project for satisfy my needs until the offical project go furth
 
 1. Supported Python 2.7 with action scripts
 1. BOM generation works (included libxslt)
+1. Separated KiCad data so the user could update symbols/footprints/templates/packages3D easily
 1. Updated to latest KiCad (5.1.0 currently)
 1. Updated to latest flatpak runtime (org.gnome.Platform 3.30 currently)
 
@@ -45,7 +46,7 @@ If you want to make them unified, you could just remove the directory `~/.var/ap
 
 ## Scripts
 
-You custom python script could be place into `~/.kicad/scripting/plugins/`, they will discover by application during runtime.
+Your custom python script could be place into `~/.kicad/scripting/plugins/`, they will discover by application during runtime.
 
 ## Application Data
 
