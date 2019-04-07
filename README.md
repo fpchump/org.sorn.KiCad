@@ -22,11 +22,13 @@ So I create this project for satisfy my needs until the offical project go furth
 
 There have two ways to install this distribution:
 
-1. Build and install your flatpak
-1. Download and install the flatpaks I builded from Github [Releases](https://github.com/fpchump/org.sorn.KiCad/releases)
+1.  Build and install your flatpak
+1.  Download and install the flatpaks I builded from Github [Releases](https://github.com/fpchump/org.sorn.KiCad/releases)
+
+    (We only builded for arch x86_x64, if you want other arches, just build yourself)
 
     Download `org.sorn.KiCad.flatpak` and `org.sorn.KiCad.Locale.flatpak` to `/tmp` or where you like and follow similar instructions:
-    
+
         $ cd /tmp
         $ flatpak install org.sorn.KiCad.flatpak
         $ flatpak install org.sorn.KiCad.Locale.flatpak
@@ -51,25 +53,24 @@ Normal KiCad will install application data into `/usr/share/kicad/`, but that co
 
 Now you should download these git libraries and install them to you custom directory and modify the correct KiCad environments:
 
-* https://github.com/KiCad/kicad-symbols
-* https://github.com/KiCad/kicad-footprints
-* https://github.com/KiCad/kicad-templates
-* https://github.com/KiCad/kicad-packages3D
+- https://github.com/KiCad/kicad-symbols
+- https://github.com/KiCad/kicad-footprints
+- https://github.com/KiCad/kicad-templates
+- https://github.com/KiCad/kicad-packages3D
 
 Use cmake to install them, blablabla...
 
-Modify those environments in file `kicad_common` of config directory:
+Modify these environments in file `kicad_common` of config directory:
 
-* KICAD_PTEMPLATES
-* KICAD_SYMBOL_DIR
-* KICAD_TEMPLATE_DIR
-* KISYS3DMOD
-* KISYSMOD
+- KICAD_PTEMPLATES
+- KICAD_SYMBOL_DIR
+- KICAD_TEMPLATE_DIR
+- KISYS3DMOD
+- KISYSMOD
 
 Point them to correct directory.
 
-Then, add all libraries and symbols names to `fp-lib-table` and `sym-lib-table` . 
-
+Then, add all libraries and symbols names to `fp-lib-table` and `sym-lib-table` .
 
 ## Know Issues
 
