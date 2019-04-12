@@ -49,16 +49,13 @@ modules:
     post-install:
       - chmod 755 /app/lib/libtk*.so
   - shared-modules/python2.7/python-2.7.15.json
-  - name: pip-update
+  - name: basic-python-packages
     buildsystem: simple
     build-commands:
-      - pip install -U pip
-      - pip install -U setuptools
-      - pip install -U wheel
-  - name: scons
-    buildsystem: simple
-    build-commands:
-      - pip install scons
+      - python -m pip install -U pip
+      - python -m pip install -U setuptools
+      - python -m pip install -U wheel
+      - python -m pip install -U virtualenv
   - name: msgpack
     buildsystem: cmake
     sources:
@@ -95,8 +92,10 @@ modules:
         url: https://www.apache.org/dist/serf/serf-1.3.9.tar.bz2
         sha256: 549c2d21c577a8a9c0450facb5cca809f26591f048e466552240947bdf7a87cc
     build-commands:
-      - scons APR=/app APU=/app PREFIX=/app LIBDIR=/app/lib
-      - scons install
+      - virtualenv -p python2 .venv
+      - source .venv/bin/activate && pip install scons
+      - source .venv/bin/activate && scons APR=/app APU=/app PREFIX=/app LIBDIR=/app/lib
+      - source .venv/bin/activate && scons install
   - name: utf8proc
     buildsystem: cmake
     builddir: true
@@ -205,7 +204,7 @@ modules:
       - -DBOOST_ROOT=/app
       - -DGLEW_GLEW_LIBRARY=/app/lib/libGLEW.so
       - -DGLEW_INCLUDE_DIR=/app/include/GL
-      - -DOPENGL_glu_LIBRARY=/app/lib/libGLU.so
+      - -DOPENGL_GLU_LIBRARY=/app/lib/libGLU.so
       - -DKICAD_SCRIPTING_ACTION_MENU=ON
       - -DKICAD_SCRIPTING_WXPYTHON_PHOENIX=ON
       - -DKICAD_SPICE=ON
