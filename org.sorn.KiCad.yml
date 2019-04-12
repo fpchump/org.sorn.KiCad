@@ -48,10 +48,46 @@ modules:
         sha256: 49e7bca08dde95195a27f594f7c850b088be357a7c7096e44e1158c7a5fd7b33
     post-install:
       - chmod 755 /app/lib/libtk*.so
-  - shared-modules/python2.7/python-2.7.15.json
+  - name: python-3.6.8
+    sources:
+      - type: git
+        tag: v3.6.8
+        url: https://github.com/python/cpython.git
+    config-opts:
+      - "--enable-shared"
+      - "--with-ensurepip=yes"
+      - "--with-system-expat"
+      - "--with-system-ffi"
+      - "--enable-loadable-sqlite-extensions"
+      - "--with-dbmliborder=gdbm"
+      - "--enable-unicode=ucs4"
+    post-install:
+      # Theres seem to be a permissions missmatch that causes the debug
+      # stripping to fail
+      - chmod 644 /app/lib/libpython*.so*
+    cleanup:
+      - "/bin/idle*"
+      - "/bin/pydoc*"
+      - "/include"
+      - "/share"
+      # Test scripts
+      - "/lib/python*/test"
+      - "/lib/python*/*/test"
+      - "/lib/python*/*/tests"
+      - "/lib/python*/lib-tk/test"
+      - "/lib/python*/lib-dynload/_*_test.*.so"
+      - "/lib/python*/lib-dynload/_test*.*.so"
+      # Unused modules
+      - "/lib/python*/idlelib"
+      - "/lib/python*/turtle*"
   - name: basic-python-packages
     buildsystem: simple
     build-commands:
+      # Fixs the `python`, `pip` and `easy_install` in path will invoke those
+      # under directory `/usr/bin/`
+      - ln -s /app/bin/python3 /app/bin/python
+      - ln -s /app/bin/pip3 /app/bin/pip
+      - ln -s /app/bin/easy_install-3.6 /app/bin/easy_install
       - python -m pip install -U pip
       - python -m pip install -U setuptools
       - python -m pip install -U wheel
@@ -208,6 +244,7 @@ modules:
       - -DKICAD_SCRIPTING_ACTION_MENU=ON
       - -DKICAD_SCRIPTING_WXPYTHON_PHOENIX=ON
       - -DKICAD_SPICE=ON
+      - -DKICAD_SCRIPTING_PYTHON3=ON
   - name: kicad-i18n
     sources:
       - type: git
